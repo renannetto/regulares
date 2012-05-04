@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Manipulador de linguagens regulares</title>
+		<link rel="stylesheet" href="estilos/principal.css" type="text/css" />
+		<script type="text/javascript" src="utilitarios.js"></script>
+		<script type="text/javascript" src="regulares.js"></script>
+		<script type="text/javascript" src="controle.js"></script>
+	</head>
+	<body>
+		<header id="cabecalho">
+			<h1>Manipulador de linguagens regulares</h1>
+			<ul>
+				<li>Lucas Pereira (10100754)</li>
+				<li>Renan Oliveira (10103126)</li>
+			</ul>
+		</header>
+		<div id="caixaDeMensagens">Aviso</div>
+		<div id="containerPrincipal">
+			<nav id="menuPrincipal">
+				<button id="botaoCriarAutomatoFinito">Criar AF</button>
+				<button id="botaoCriarExpressaoRegular">Criar ER</button>			
+			</nav>
+			<div id="containerCentral">
+				<nav id="menuDeAutomatosFinitosExpressoesRegulares">
+					<ul id="listaDeAutomatosFinitos" class="listaDeEscolha"></ul>
+					<ul id="listaDeExpressoesRegulares" class="listaDeEscolha"></ul>
+				</nav>
+				<div id="containerDeAutomatoFinitoExpressaoRegular">
+					<nav id="menuDeOpcoesDoAutomatoFinitoExpressaoRegular">
+						<input type="text" id="textoAdicionarEstadoDeAutomatoFinito" placeholder="A" class="pequeno caixaAlta" maxlength="1" />
+						<button id="botaoAdicionarEstadoDeAutomatoFinito">Adicionar Estado</button>
+						<input type="text" id="textoAdicionarSimboloDeAutomatoFinito" placeholder="a" class="pequeno caixaBaixa" maxlength="1" />
+						<button id="botaoAdicionarSimboloDeAutomatoFinito">Adicionar Símbolo</button>
+						<button id="botaoRemoverAutomatoFinitoExpressaoRegular">Remover Automato</button>
+					</nav>
+					<section id="automatoFinitoExpressaoRegular">
+					</section>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
