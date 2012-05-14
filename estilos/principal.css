@@ -40,11 +40,13 @@ h6 {
 button {
 	color: #555;
 	text-shadow: 0.1em 0.1em 0.1em #FFF;
+	
 	background-image: linear-gradient(top, #EEE 0%, #BBB 100%);
 	background-image: -webkit-linear-gradient(top, #EEE 0%, #BBB 100%);
 	background-image: -moz-linear-gradient(top, #EEE 0%, #BBB 100%);
 	background-image: -ms-linear-gradient(top, #EEE 0%, #BBB 100%);
 	background-image: -o-linear-gradient(top, #EEE 0%, #BBB 100%);
+	
 	border-radius: 20px;
 	border-width: 0;
 	font-size: 0.9em;
@@ -92,7 +94,7 @@ input[type="text"].transicaoDeAutomatoFinito {
 }
 
 #cabecalho {
-	padding: 15px;
+	padding: 15px 15px 0 15px;
 }
 
 #cabecalho ul li { 
@@ -112,11 +114,11 @@ input[type="text"].transicaoDeAutomatoFinito {
 	margin-right: 15px;
 }
 
-#menuDeOpcoesDoAutomatoFinitoExpressaoRegular button {
+#menuDeOpcoesDoAutomatoFinito button {
 	margin-right: 15px;
 }
 
-#menuDeOpcoesDoAutomatoFinitoExpressaoRegular {
+#menuDeOpcoesDoAutomatoFinito {
 	margin-bottom: 30px;
 }
 
@@ -149,6 +151,16 @@ input[type="text"].transicaoDeAutomatoFinito {
 	padding: 0;
 }
 
+ul {
+	color: #777;
+	margin-bottom: 20px;
+}
+
+p {
+	color: #777;
+	margin-bottom: 20px;
+}
+
 #caixaDeMensagens {
 	background-color: #EEE;
 	border-color: #AAA;
@@ -172,22 +184,22 @@ input[type="text"].transicaoDeAutomatoFinito {
 
 #caixaDeMensagens.sucesso {
 	background-color: #E6F5E6;
-	border-color: #090;
-	color: #090;
+	border-color: #0A3;
+	color: #0A3;
 	visibility: visible;
 }
 
 #caixaDeMensagens.aviso {
 	background-color: #FFFAE6;
-	border-color: #FFCC00;
-	color: #FFCC00;
+	border-color: #EA0;
+	color: #EA0;
 	visibility: visible;
 }
 
 #caixaDeMensagens.informativo {
 	background-color: #E6F0FF;
-	border-color: #0066FF;
-	color: #0066FF;
+	border-color: #06F;
+	color: #06F;
 	visibility: visible;
 }
 
@@ -197,6 +209,7 @@ input[type="text"].transicaoDeAutomatoFinito {
 	display: -moz-box;
 	display: -o-box;
 	display: -ms-box;
+	
 	box-orient: vertical;
 	-webkit-box-orient: vertical;
 	-moz-box-orient: vertical;
@@ -210,6 +223,7 @@ input[type="text"].transicaoDeAutomatoFinito {
 	display: -moz-box;
 	display: -o-box;
 	display: -ms-box;
+	
 	box-orient: hotizontal;
 	-webkit-box-orient: hotizontal;
 	-moz-box-orient: hotizontal;
@@ -223,12 +237,19 @@ input[type="text"].transicaoDeAutomatoFinito {
 	display: -moz-box;
 	display: -o-box;
 	display: -ms-box;
+	
 	box-orient: vertical;
 	-webkit-box-orient: vertical;
 	-moz-box-orient: vertical;
 	-o-box-orient: vertical;
 	-ms-box-orient: vertical;
+	
+	box-flex: 1;
 	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
+	-o-box-flex: 1;
+	-ms-box-flex: 1;
+	
 	margin-left: 50px;
 }
 
@@ -242,6 +263,7 @@ th {
 	background-color: #333;
 	color: #FFF;
 	padding: 5px;
+	min-width: 100px;
 }
 
 td {
@@ -258,4 +280,23 @@ strong {
 
 .caixaBaixa {
 	text-transform: lowercase;
+}
+
+.estadoFinal,
+.estadoInicial {
+	margin-right: 15px;
+}
+
+.estadoFinal:hover,
+.estadoInicial:hover {
+	cursor: pointer;
+}
+
+.estadoFinal {
+	width: 1em;
+}
+
+.estadoInicial {
+	margin-right: 5px;
+	width: 1em;
 }

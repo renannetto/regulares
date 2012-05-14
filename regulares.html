@@ -20,7 +20,7 @@
 		<div id="containerPrincipal">
 			<nav id="menuPrincipal">
 				<button id="botaoCriarAutomatoFinito">Criar AF</button>
-				<button id="botaoCriarExpressaoRegular">Criar ER</button>			
+				<button id="botaoCriarExpressaoRegular" disabled="disabled">Criar ER</button>			
 			</nav>
 			<div id="containerCentral">
 				<nav id="menuDeAutomatosFinitosExpressoesRegulares">
@@ -28,14 +28,22 @@
 					<ul id="listaDeExpressoesRegulares" class="listaDeEscolha"></ul>
 				</nav>
 				<div id="containerDeAutomatoFinitoExpressaoRegular">
-					<nav id="menuDeOpcoesDoAutomatoFinitoExpressaoRegular">
+					<nav id="menuDeOpcoesDoAutomatoFinito">
 						<input type="text" id="textoAdicionarEstadoDeAutomatoFinito" placeholder="A" class="pequeno caixaAlta" maxlength="1" />
 						<button id="botaoAdicionarEstadoDeAutomatoFinito">Adicionar Estado</button>
 						<input type="text" id="textoAdicionarSimboloDeAutomatoFinito" placeholder="a" class="pequeno caixaBaixa" maxlength="1" />
 						<button id="botaoAdicionarSimboloDeAutomatoFinito">Adicionar Símbolo</button>
-						<button id="botaoRemoverAutomatoFinitoExpressaoRegular">Remover Automato</button>
+						<button id="botaoDeterminizarAutomatoFinito">Determinizar</button>
+						<button id="botaoMinimizarAutomatoFinito">Minimizar</button>
+						<button id="botaoClonarAutomatoFinito">Clonar</button>
+						<button id="botaoRemoverAutomatoFinito" disabled="disabled">Remover</button>
 					</nav>
-					<section id="automatoFinitoExpressaoRegular">
+					<section id="automatoFinito">
+						<ul>
+							<li>A exclamação (<strong>!</strong>) representa o estado de erro.</li>
+							<li>Para tornar um estado final ou inicial clique nas "bolinhas" ao lado dos estados.</li>
+							<li>Transições com multiplos estados devem ter estados separados por virgula.</li>
+						</ul>
 					</section>
 				</div>
 			</div>
