@@ -200,6 +200,7 @@ AutomatosFinitos = {
 		if (primeiro !== undefined && primeiro === false) {
 			this.juntarEstadosCompostos(nomeDoAutomato, automato);
 		}
+		console.log(ConjuntoDeAutomatosFinitos);
 		return true;
 	},
 	
@@ -214,14 +215,15 @@ AutomatosFinitos = {
 			var estadosDeDestinoDoEstadoComposto = [];
 			Utilitarios.paraCada(transicao.estadosDeDestino, function(estado, indiceDoEstado) {
 				if (estado.final) {
-					automato.estados[chaveDoEstadoComposto].final = true;
+					this.adicionarEstadoFinal(nomeDoAutomato, chaveDoEstadoComposto);
+//					automato.estados[chaveDoEstadoComposto].final = true;
 				}
 				Utilitarios.paraCada(automato.transicoes[estado.simbolo][chaveDoSimbolo].estadosDeDestino, function(estadoDeDestinoDoEstadoComposto, indiceDoEstadoDeDestinoDoEstadoComposto) {
 					if (estadosDeDestinoDoEstadoComposto.indexOf(estadoDeDestinoDoEstadoComposto) === -1 && estadoDeDestinoDoEstadoComposto.simbolo !== "!") {
 						estadosDeDestinoDoEstadoComposto.push(estadoDeDestinoDoEstadoComposto);
 					}
 				});
-			});
+			}, this);
 			if (estadosDeDestinoDoEstadoComposto.length === 0) {
 				estadosDeDestinoDoEstadoComposto.push(automato.estados["!"]);
 			}
@@ -243,6 +245,7 @@ AutomatosFinitos = {
 	
 	minimizar: function(nomeDoAutomato) {
 		var automato = ConjuntoDeAutomatosFinitos[nomeDoAutomato];
+		console.log(ConjuntoDeAutomatosFinitos);
 		if (automato === undefined || 
 				!this.removerEstadosInacessiveis(automato, nomeDoAutomato) || 
 				!this.removerEstadosMortos(automato, nomeDoAutomato) ||
@@ -275,6 +278,7 @@ AutomatosFinitos = {
 				this.removerEstado(nomeDoAutomato, automato, estado);
 			}
 		}, this);
+		console.log(automato.estados);
 		return automatoDeterministico;
 	},
 	
@@ -306,6 +310,7 @@ AutomatosFinitos = {
 				this.removerEstado(nomeDoAutomato, automato, estado);
 			}
 		}, this);
+		console.log(automato.estados);
 		return automatoDeterministico;
 	},
 	
