@@ -1,68 +1,92 @@
 (function() {
-	var listaDeAutomatosFinitos = undefined;
-	var selecionado = undefined;
 	var caixaDeMensagens = undefined;
-	var botaoCriarAutomatoFinito = undefined;
+	var temporizadorDaCaixaDeMensagens = undefined;
+	
+	var containerDeExpressaoRegular = undefined;
+	var listaDeExpressoesRegulares = undefined;
 	var botaoCriarExpressaoRegular = undefined;
+	
+	var automatoFinitoSelecionado = undefined;
+	var containerDeAutomatoFinito = undefined;
+	var secaoAutomatoFinito = undefined;
+	var listaDeAutomatosFinitos = undefined;
+	var botaoCriarAutomatoFinito = undefined;
 	var botaoAdicionarEstadoDeAutomatoFinito = undefined;
 	var textoAdicionarEstadoDeAutomatoFinito = undefined;
 	var botaoAdicionarSimboloDeAutomatoFinito = undefined;
 	var textoAdicionarSimboloDeAutomatoFinito = undefined;
-	var automatoFinito = undefined;
-	var temporizadorDaCaixaDeMensagens = undefined;
 	var botaoDeterminizarAutomatoFinito = undefined;
 	var botaoClonarAutomatoFinito = undefined;
 	var botaoMinimizarAutomatoFinito = undefined;
 	
-	criarAutomatoFinito = function() {
+	criarAutomatoFinito = function(evento, funcaoDeCriacao, mensagemDeSucesso, mensagemDeErro, nomePadrao) {
+		if (funcaoDeCriacao === undefined) {
+			funcaoDeCriacao = function(nomeDoAutomatoFinito) {
+				return AutomatosFinitos.criar(nomeDoAutomatoFinito);
+			};
+			mensagemDeSucesso = "Autômato finito <strong>%nomeDoAutomatoFinito%</strong> criado.";
+			mensagemDeErro = "Já existe um automato finito com o nome <strong>%nomeDoAutomatoFinito%</strong>. Por favor escolha outro nome.";
+			nomePadrao = "automatoFinito";
+		}
 		desabilitarBotoesDoMenuPrincipal();
 		desabilitarBotoesDoMenuDeOpcoes();
-		var automato = document.createElement("li");
-		listaDeAutomatosFinitos.insertBefore(automato, listaDeAutomatosFinitos.firstChild);
-		var automatoEditavel = document.createElement("input");
-		automatoEditavel.setAttribute("type", "text");
-		automatoEditavel.setAttribute("value", "novoAutomato");
-		automato.appendChild(automatoEditavel);
-		var criar = function() {
-			var nomeDoAutomato = automatoEditavel.value;
-			if (AutomatosFinitos.criar(nomeDoAutomato)) {
-				automato.innerHTML = nomeDoAutomato;
+		var automatoItemDaLista = document.createElement("li");
+		var automatoFinitoCaixaDeTexto = document.createElement("input");
+		automatoFinitoCaixaDeTexto.setAttribute("type", "text");
+		automatoFinitoCaixaDeTexto.setAttribute("value", nomePadrao);
+		automatoItemDaLista.appendChild(automatoFinitoCaixaDeTexto);
+		listaDeAutomatosFinitos.insertBefore(automatoItemDaLista, listaDeAutomatosFinitos.firstChild);
+		var concluirCriacao = function() {
+			var nomeDoAutomatoFinito = automatoFinitoCaixaDeTexto.value;
+			if (funcaoDeCriacao(nomeDoAutomatoFinito)) {
+				automatoItemDaLista.innerHTML = nomeDoAutomatoFinito;
+				automatoFinitoCaixaDeTexto.onblur = null;
+				automatoFinitoCaixaDeTexto.onkeypress = null;
+				mostrarMensagem("sucesso", mensagemDeSucesso.replace("%nomeDoAutomatoFinito%", nomeDoAutomatoFinito));
+				mostrarListaDeAutomatosFinitos();
+				selecionarAutomatoFinito(nomeDoAutomatoFinito);
 				habilitarBotoesDoMenuPrincipal();
 				habilitarBotoesDoMenuDeOpcoes();
-				automatoEditavel.onblur = null;
-				automatoEditavel.onkeypress = null;
-				mostrarMensagem("sucesso", "Autômato finito <strong>" + nomeDoAutomato + "</strong> criado.");
-				automato.onclick = function() {
-					selecionar(automato);
-				};
-				selecionar(automato);
 			} else {
-				mostrarMensagem("erro", "Nome de autômato finito já existente, por favor escolha outro nome.");
-				automatoEditavel.select();
+				mostrarMensagem("erro", mensagemDeErro.replace("%nomeDoAutomatoFinito%", nomeDoAutomatoFinito));
+				automatoFinitoCaixaDeTexto.select();
 			}
 		};
-		automatoEditavel.onkeypress = function(evento) {
+		automatoFinitoCaixaDeTexto.onkeypress = function(evento) {
 			if (evento.keyCode === 13) {
-				criar();
+				concluirCriacao();
 			}
 		};
-		automatoEditavel.onblur = criar;
-		automatoEditavel.select();
+		automatoFinitoCaixaDeTexto.onblur = concluirCriacao;
+		automatoFinitoCaixaDeTexto.select();
+	};
+	
+	mostrarListaDeAutomatosFinitos = function() {
+		listaDeAutomatosFinitos.innerHTML = "";
+		Utilitarios.paraCada(ConjuntoDeAutomatosFinitos, function(automatoFinito, nomeDoAutomatoFinito) {
+			var automatoItemDaLista = document.createElement("li");
+			automatoItemDaLista.innerHTML = nomeDoAutomatoFinito;
+			automatoItemDaLista.setAttribute("id", nomeDoAutomatoFinito);
+			automatoItemDaLista.onclick = function() {
+				selecionarAutomatoFinito(nomeDoAutomatoFinito);
+			};
+			listaDeAutomatosFinitos.insertBefore(automatoItemDaLista, listaDeAutomatosFinitos.firstChild);
+		});
 	};
 	
 	mostrarAutomatoFinito = function() {
-		var nomeDoAutomatoFinito = obterSelecionado();
-		var automatoFinito = AutomatosFinitos.fornecer(nomeDoAutomatoFinito);
+		var nomeDoAutomatoFinito = obterAutomatoFinitoSelecionado();
+		var automatoFinito = ConjuntoDeAutomatosFinitos[nomeDoAutomatoFinito];
 		var tabelaDoAutomatoFinito = document.createElement("table");
-		var cabecalhoDoAutomatoFinito = mostrarAlfabeto(automatoFinito, nomeDoAutomatoFinito);
-		var linhasDosEstados = mostrarEstados(automatoFinito, nomeDoAutomatoFinito);
-		var corpoDoAutomatoFinito = mostrarTransicoes(automatoFinito, nomeDoAutomatoFinito, linhasDosEstados);
+		var cabecalhoDoAutomatoFinito = mostrarAlfabetoDoAutomatoFinito(automatoFinito, nomeDoAutomatoFinito);
+		var linhasDosEstadosDoAutomatoFinito = mostrarEstadosDoAutomatoFinito(automatoFinito, nomeDoAutomatoFinito);
+		var corpoDoAutomatoFinito = mostrarTransicoesDeEstadoDoAutomatoFinito(automatoFinito, nomeDoAutomatoFinito, linhasDosEstadosDoAutomatoFinito);
 		tabelaDoAutomatoFinito.appendChild(cabecalhoDoAutomatoFinito);
 		tabelaDoAutomatoFinito.appendChild(corpoDoAutomatoFinito);
-		mostrarTabela(tabelaDoAutomatoFinito);
+		mostrarTabelaDoAutomatoFinito(tabelaDoAutomatoFinito);
 	};
 	
-	mostrarAlfabeto = function(automatoFinito, nomeDoAutomatoFinito) {
+	mostrarAlfabetoDoAutomatoFinito = function(automatoFinito, nomeDoAutomatoFinito) {
 		var cabecalhoDoAutomatoFinito = document.createElement("thead");
 		var primeiraCelulaDoAutomatoFinito = document.createElement("th");
 		var linhaDoAlfabeto = document.createElement("tr");
@@ -77,7 +101,7 @@
 		return cabecalhoDoAutomatoFinito;
 	};
 	
-	mostrarEstados = function(automatoFinito, nomeDoAutomatoFinto) {
+	mostrarEstadosDoAutomatoFinito = function(automatoFinito, nomeDoAutomatoFinto) {
 		var linhasDoEstados = {};
 		Utilitarios.paraCada(automatoFinito.estados, function(estado, chaveDoEstado) {
 			var linhaDoEstado = document.createElement("tr");
@@ -132,7 +156,7 @@
 		return linhasDoEstados;
 	};
 	
-	mostrarTransicoes = function(automatoFinito, nomeDoAutomatoFinito, linhasDosEstados) {
+	mostrarTransicoesDeEstadoDoAutomatoFinito = function(automatoFinito, nomeDoAutomatoFinito, linhasDosEstados) {
 		var corpoDoAutomatoFinito = document.createElement("tbody");
 		Utilitarios.paraCada(automatoFinito.estados, function(estado, chaveDoEstado) {
 			Utilitarios.paraCada(automatoFinito.alfabeto, function(simbolo, chaveDoSimbolo) {
@@ -160,18 +184,18 @@
 		return corpoDoAutomatoFinito;
 	};
 
-	mostrarTabela = function(tabelaDoAutomatoFinito) {
+	mostrarTabelaDoAutomatoFinito = function(tabelaDoAutomatoFinito) {
 		tabelaDoAutomatoFinito.setAttribute("id", "tabelaDoAutomatoFinitoSelecionado");
 		var tabelaAntiga = identificador("tabelaDoAutomatoFinitoSelecionado");
-		if (tabelaAntiga !== null) {
-			automatoFinito.removeChild(tabelaAntiga);
+		if (tabelaAntiga !== null && tabelaAntiga !== undefined) {
+			secaoAutomatoFinito.removeChild(tabelaAntiga);
 		}
-		automatoFinito.appendChild(tabelaDoAutomatoFinito);
+		secaoAutomatoFinito.appendChild(tabelaDoAutomatoFinito);
 	};
 
 	adicionarEstadoDeAutomatoFinito = function() {
 		var texto = textoAdicionarEstadoDeAutomatoFinito.value.toLocaleUpperCase();
-		if (AutomatosFinitos.adicionarEstado(obterSelecionado(), texto)) {
+		if (AutomatosFinitos.adicionarEstado(obterAutomatoFinitoSelecionado(), texto)) {
 			mostrarAutomatoFinito();
 			mostrarMensagem("informativo", "Estado <strong>"+texto+"</strong> adicionado.");
 		} else {
@@ -183,7 +207,7 @@
 
 	adicionarSimboloDeAutomatoFinito = function() {
 		var texto = textoAdicionarSimboloDeAutomatoFinito.value.toLocaleLowerCase();
-		if (AutomatosFinitos.adicionarSimbolo(obterSelecionado(), texto)) {
+		if (AutomatosFinitos.adicionarSimbolo(obterAutomatoFinitoSelecionado(), texto)) {
 			mostrarAutomatoFinito();
 			mostrarMensagem("informativo", "Símbolo <strong>"+texto+"</strong> adicionado.");
 		} else {
@@ -198,7 +222,7 @@
 		var textoDaTransicaoAntiga = editor.getAttribute("value"); 
 		if (textoDaTransicao !== textoDaTransicaoAntiga) {
 			var estadosDaTransicao = textoDaTransicao.split(/, ?/);
-			var sucesso = AutomatosFinitos.fixarTransicao(obterSelecionado(), chaveDoEstado, chaveDoSimbolo, estadosDaTransicao);
+			var sucesso = AutomatosFinitos.fixarTransicao(obterAutomatoFinitoSelecionado(), chaveDoEstado, chaveDoSimbolo, estadosDaTransicao);
 			if (!sucesso) {
 				mostrarMensagem("aviso", "A transição deve conter apenas estados existentes. As transições do estado de erro (!) não podem ser alteradas. Transições com multiplos estados devem ter estados separados por virgula.");
 				editor.value = textoDaTransicaoAntiga;
@@ -212,7 +236,7 @@
 	};
 
 	determinizarAutomatoFinito = function() {
-		var nomeDoAutomato = obterSelecionado();
+		var nomeDoAutomato = obterAutomatoFinitoSelecionado();
 		var sucesso = AutomatosFinitos.determinizar(nomeDoAutomato);
 		if (!sucesso) {
 			mostrarMensagem("erro", "Ocorreu um erro na determinização do autômato finito <strong>" + nomeDoAutomato+ "</strong>.");
@@ -223,7 +247,7 @@
 	};
 
 	minimizarAutomatoFinito = function() {
-		var nomeDoAutomato = obterSelecionado();
+		var nomeDoAutomato = obterAutomatoFinitoSelecionado();
 		var sucesso = AutomatosFinitos.minimizar(nomeDoAutomato);
 		if (!sucesso) {
 			mostrarMensagem("erro", "Ocorreu um erro na minimização do autômato finito <strong>" + nomeDoAutomato+ "</strong>. Certifique-se que o automato já foi determinizado.");
@@ -233,40 +257,14 @@
 		mostrarAutomatoFinito();
 	};
 
-	clonarAutomatoFinito = function() {
-		desabilitarBotoesDoMenuPrincipal();
-		desabilitarBotoesDoMenuDeOpcoes();
-		var automato = document.createElement("li");
-		listaDeAutomatosFinitos.insertBefore(automato, listaDeAutomatosFinitos.firstChild);
-		var automatoEditavel = document.createElement("input");
-		automatoEditavel.setAttribute("type", "text");
-		automatoEditavel.setAttribute("value", "automatoClonado");
-		automato.appendChild(automatoEditavel);
-		var clonar = function() {
-			var nomeDoAutomato = automatoEditavel.value;
-			if (AutomatosFinitos.clonar(obterSelecionado(), nomeDoAutomato)) {
-				automato.innerHTML = nomeDoAutomato;
-				habilitarBotoesDoMenuPrincipal();
-				habilitarBotoesDoMenuDeOpcoes();
-				automatoEditavel.onblur = null;
-				automatoEditavel.onkeypress = null;
-				mostrarMensagem("sucesso", "Autômato finito <strong>" + nomeDoAutomato + "</strong> clonado.");
-				automato.onclick = function() {
-					selecionar(automato);
-				};
-				selecionar(automato);
-			} else {
-				mostrarMensagem("erro", "Nome de autômato finito já existente, por favor escolha outro nome.");
-				automatoEditavel.select();
-			}
-		};
-		automatoEditavel.onkeypress = function(evento) {
-			if (evento.keyCode === 13) {
-				clonar();
-			}
-		};
-		automatoEditavel.onblur = clonar;
-		automatoEditavel.select();
+	clonarAutomatoFinito = function(evento) {
+		criarAutomatoFinito(evento, function(nomeDoAutomatoFinito) {
+			return AutomatosFinitos.clonar(obterAutomatoFinitoSelecionado(), nomeDoAutomatoFinito);
+		}, "Autômato finito <strong>%nomeDoAutomatoFinito%</strong> clonado.", "Já existe um automato finito com o nome <strong>%nomeDoAutomatoFinito%</strong>. Por favor escolha outro nome.", "automatoClonado");
+	};
+	
+	mostarExpressaoRegular = function() {
+		
 	};
 
 	desabilitarBotoesDoMenuPrincipal = function() {
@@ -280,7 +278,6 @@
 		botaoDeterminizarAutomatoFinito.setAttribute("disabled", "disabled");
 		botaoClonarAutomatoFinito.setAttribute("disabled", "disabled");
 		botaoMinimizarAutomatoFinito.setAttribute("disabled", "disabled");
-
 	};
 
 	habilitarBotoesDoMenuPrincipal = function() {
@@ -296,18 +293,38 @@
 		botaoMinimizarAutomatoFinito.removeAttribute("disabled");
 	};
 	
-	selecionar = function(novoSelecionado) {
-		if (selecionado !== undefined) {
-			selecionado.setAttribute("class", "");
+	selecionarAutomatoFinito = function(nomeDoAutomatoFinito) {
+		containerDeAutomatoFinito.style.display = "block";
+		containerDeExpressaoRegular.style.display = "none";
+		if (automatoFinitoSelecionado !== undefined) {
+			automatoFinitoSelecionado.setAttribute("class", "");
 		}
-		selecionado = novoSelecionado;
-		selecionado.setAttribute("class", "selecionado");
+		automatoFinitoSelecionado = identificador(nomeDoAutomatoFinito);
+		automatoFinitoSelecionado.setAttribute("class", "selecionado");
 		mostrarAutomatoFinito();
 	};
 	
-	obterSelecionado = function() {
-		if (selecionado !== undefined) {
-			return selecionado.innerHTML;
+	obterAutomatoFinitoSelecionado = function() {
+		if (automatoFinitoSelecionado !== undefined) {
+			return automatoFinitoSelecionado.innerHTML;
+		}
+		return "";
+	};
+	
+	selecionarExpressaoRegular = function(nomeDaExpressaoRegular) {
+		containerDeExpressaoRegular.style.display = "block";
+		containerDeAutomatoFinito.style.display = "none";
+		if (expressaoRegularSelecionada !== undefined) {
+			expressaoRegularSelecionada.setAttribute("class", "");
+		}
+		expressaoRegularSelecionada = identificador(nomeDoAutomatoFinito);
+		expressaoRegularSelecionada.setAttribute("class", "selecionado");
+		mostrarExpressaoRegular();
+	};
+	
+	obterExpressaoRegularSelecionadaFinitoSelecionado = function() {
+		if (expressaoRegularSelecionada !== undefined) {
+			return expressaoRegularSelecionada.innerHTML;
 		}
 		return "";
 	};
@@ -329,18 +346,24 @@
 	};
 	
 	adicionarTratadores = function() {
-		listaDeAutomatosFinitos = identificador("listaDeAutomatosFinitos");
 		caixaDeMensagens = identificador("caixaDeMensagens");
-		botaoCriarAutomatoFinito = identificador("botaoCriarAutomatoFinito");
+		
+		listaDeExpressoesRegulares = identificador("listaDeExpressoesRegulares");
+		containerDeExpressaoRegular = identificador("containerDeExpressaoRegular");
 		botaoCriarExpressaoRegular = identificador("botaoCriarExpressaoRegular");
+		
+		listaDeAutomatosFinitos = identificador("listaDeAutomatosFinitos");
+		containerDeAutomatoFinito = identificador("containerDeAutomatoFinito");
+		secaoAutomatoFinito = identificador("secaoAutomatoFinito");
+		botaoCriarAutomatoFinito = identificador("botaoCriarAutomatoFinito");
 		botaoAdicionarEstadoDeAutomatoFinito = identificador("botaoAdicionarEstadoDeAutomatoFinito");
-		textoAdicionarEstadoDeAutomatoFinito = identificador("textoAdicionarEstadoDeAutomatoFinito");
-		automatoFinito = identificador("automatoFinito");
 		botaoAdicionarSimboloDeAutomatoFinito = identificador("botaoAdicionarSimboloDeAutomatoFinito");
-		textoAdicionarSimboloDeAutomatoFinito = identificador("textoAdicionarSimboloDeAutomatoFinito");
 		botaoDeterminizarAutomatoFinito = identificador("botaoDeterminizarAutomatoFinito");
 		botaoMinimizarAutomatoFinito = identificador("botaoMinimizarAutomatoFinito");
 		botaoClonarAutomatoFinito = identificador("botaoClonarAutomatoFinito");
+		textoAdicionarEstadoDeAutomatoFinito = identificador("textoAdicionarEstadoDeAutomatoFinito");
+		textoAdicionarSimboloDeAutomatoFinito = identificador("textoAdicionarSimboloDeAutomatoFinito");
+		
 		botaoCriarAutomatoFinito.onclick = criarAutomatoFinito;
 		botaoAdicionarEstadoDeAutomatoFinito.onclick = adicionarEstadoDeAutomatoFinito;
 		botaoAdicionarSimboloDeAutomatoFinito.onclick = adicionarSimboloDeAutomatoFinito;

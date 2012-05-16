@@ -6,6 +6,8 @@
 		<link rel="stylesheet" href="estilos/principal.css" type="text/css" />
 		<script type="text/javascript" src="utilitarios.js"></script>
 		<script type="text/javascript" src="regulares.js"></script>
+		<script type="text/javascript" src="automatosFinitos.js"></script>
+		<script type="text/javascript" src="expressoesRegulares.js"></script>
 		<script type="text/javascript" src="controle.js"></script>
 	</head>
 	<body>
@@ -28,23 +30,35 @@
 					<ul id="listaDeExpressoesRegulares" class="listaDeEscolha"></ul>
 				</nav>
 				<div id="containerDeAutomatoFinitoExpressaoRegular">
-					<nav id="menuDeOpcoesDoAutomatoFinito">
-						<input type="text" id="textoAdicionarEstadoDeAutomatoFinito" placeholder="A" class="pequeno caixaAlta" maxlength="1" />
-						<button id="botaoAdicionarEstadoDeAutomatoFinito">Adicionar Estado</button>
-						<input type="text" id="textoAdicionarSimboloDeAutomatoFinito" placeholder="a" class="pequeno caixaBaixa" maxlength="1" />
-						<button id="botaoAdicionarSimboloDeAutomatoFinito">Adicionar Símbolo</button>
-						<button id="botaoDeterminizarAutomatoFinito">Determinizar</button>
-						<button id="botaoMinimizarAutomatoFinito">Minimizar</button>
-						<button id="botaoClonarAutomatoFinito">Clonar</button>
-						<button id="botaoRemoverAutomatoFinito" disabled="disabled">Remover</button>
-					</nav>
-					<section id="automatoFinito">
-						<ul>
-							<li>A exclamação (<strong>!</strong>) representa o estado de erro.</li>
-							<li>Para tornar um estado final ou inicial clique nas "bolinhas" ao lado dos estados.</li>
-							<li>Transições com multiplos estados devem ter estados separados por virgula.</li>
-						</ul>
-					</section>
+					<div id="containerDeAutomatoFinito">
+						<nav id="menuDeOpcoesDoAutomatoFinito">
+							<input type="text" id="textoAdicionarEstadoDeAutomatoFinito" placeholder="A" class="pequeno caixaAlta" maxlength="1" />
+							<button id="botaoAdicionarEstadoDeAutomatoFinito">Adicionar Estado</button>
+							<input type="text" id="textoAdicionarSimboloDeAutomatoFinito" placeholder="a" class="pequeno caixaBaixa" maxlength="1" />
+							<button id="botaoAdicionarSimboloDeAutomatoFinito">Adicionar Símbolo</button>
+							<button id="botaoDeterminizarAutomatoFinito">Determinizar</button>
+							<button id="botaoMinimizarAutomatoFinito">Minimizar</button>
+							<button id="botaoClonarAutomatoFinito">Clonar</button>
+							<button id="botaoRemoverAutomatoFinito" disabled="disabled">Remover</button>
+						</nav>
+						<section id="secaoAutomatoFinito">
+							<ul>
+								<li>A exclamação (<strong>!</strong>) representa o estado de erro.</li>
+								<li>Para tornar um estado final ou inicial clique nas "bolinhas" ao lado dos estados.</li>
+								<li>Transições com multiplos estados devem ter estados separados por virgula.</li>
+							</ul>
+						</section>
+					</div>
+					<div id="containerDeExpressaoRegular">
+						<nav id="menuDeOpcoesDaExpressaoRegular">
+						
+						</nav>
+						<section id="secaoExpressaoRegular">
+							<ul>
+								<li>Expressoes regulares são legais :-)</li>
+							</ul>
+						</section>
+					</div>
 				</div>
 			</div>
 		</div>
