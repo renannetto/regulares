@@ -6,6 +6,10 @@
 	font-family: Helvetica, Verdana, Tahoma, Arial, Sens-serif;
 }
 
+body {
+	padding-bottom: 50px; 
+}
+
 h1 {
 	color: #777;
 	font-size: 3em;
@@ -13,8 +17,10 @@ h1 {
 }
 
 h2 {
-	font-size: 2.5em;
+	color: #777;
+	font-size: 1.5em;
 	font-weigith: bold;
+	margin-bottom: 10px;
 }
 
 h3 {
@@ -84,6 +90,12 @@ input[type="text"].pequeno {
 	width: 1em;
 }
 
+input[type="text"].grande {
+	font-size: 2em;
+	padding: 5px;
+	width: 20em;
+}
+
 input[type="text"].transicaoDeAutomatoFinito {
 	background-color: transparent;
 	border-width: 0;
@@ -118,7 +130,8 @@ input[type="text"].transicaoDeAutomatoFinito {
 	margin-right: 15px;
 }
 
-#menuDeOpcoesDoAutomatoFinito {
+#menuDeOpcoesDoAutomatoFinito,
+#menuDeOpcoesDaExpressaoRegular {
 	margin-bottom: 30px;
 }
 
@@ -149,6 +162,10 @@ input[type="text"].transicaoDeAutomatoFinito {
 .listaDeEscolha input {
 	border-color: #DDD;
 	padding: 0;
+}
+
+.expressaoRegular {
+	background-color: rgba(0, 102, 255, 0.08);
 }
 
 ul {
@@ -256,6 +273,7 @@ p {
 table {
 	border-collapse: separate;
 	border-spacing: 2px;
+	margin-bottom: 30px;
 	width: 800px;
 }
 
@@ -299,4 +317,61 @@ strong {
 .estadoInicial {
 	margin-right: 5px;
 	width: 1em;
+}
+
+#containerDeExpressaoRegular {
+	display: none;
+}
+
+#expressaoRegularComoTexto {
+	color: rgba(0, 102, 255, 0.6);
+	font-size: 2.2em;
+	margin-bottom: 30px;
+}
+
+#expressaoRegularComoTexto .parenteses {
+	color: rgba(0, 102, 255, 1);
+/* 	color: #06F;  */
+/* 	color: #0A3; */
+/* 	color: #F00; */
+/* 	color: rgba(255, 0, 0, 0.8); */
+/*	color: rgba(255, 0, 0, 0.9); */
+}
+
+#expressaoRegularComoTexto .simbolos {
+	color: rgba(0, 102, 255, 0.6);
+}
+
+#expressaoRegularComoTexto .operadoresBinarios {
+	color: rgba(0, 102, 255, 1);
+}
+
+#expressaoRegularComoTexto .operadoresUnarios {
+	color: rgba(0, 102, 255, 1);
+}
+
+#containerReconhecimentoDeAutomatoFinito,
+#containerEnumeracaoDeAutomatoFinito,
+#containerEquivalenciaDeExpressaoRegular {
+	margin: 40px 0;
+}
+
+#resultadoDoReconhecimento,
+#resultadoEquivalenciaComExpressaoRegular {
+	font-size: 1.2em;
+	margin: 20px 0;
+}
+
+#resultadoDaEnumeracao {
+	color: #06F;
+	font-size: 1.2em;
+	margin: 20px 0;
+}
+
+.aceita {
+	color: #0A3;
+}
+
+.naoAceita {
+	color: #F00;
 }

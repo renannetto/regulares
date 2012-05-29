@@ -8,7 +8,7 @@ Utilitarios = {
 	},
 	
 	paraCada: function(iteravel, funcaoDeIteracao, escopo) {
-		if (!Utilitarios.instanciaDe(iteravel, Object) || !Utilitarios.instanciaDe(funcaoDeIteracao, Function)) {
+		if (!(this.instanciaDe(iteravel, Object) || this.instanciaDe(iteravel, String)) || !this.instanciaDe(funcaoDeIteracao, Function)) {
 			throw new ExcecaoUtilitarios("Argumento inválido. Argumentos devem ser: [Objeto ou Lista] [Função].");
 		}
 		funcaoDeIteracao = funcaoDeIteracao.bind(escopo);

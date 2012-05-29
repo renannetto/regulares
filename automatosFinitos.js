@@ -208,7 +208,6 @@ AutomatosFinitos = {
 			Utilitarios.paraCada(transicao.estadosDeDestino, function(estado, indiceDoEstado) {
 				if (estado.final) {
 					this.adicionarEstadoFinal(nomeDoAutomato, chaveDoEstadoComposto);
-//					automato.estados[chaveDoEstadoComposto].final = true;
 				}
 				Utilitarios.paraCada(automato.transicoes[estado.simbolo][chaveDoSimbolo].estadosDeDestino, function(estadoDeDestinoDoEstadoComposto, indiceDoEstadoDeDestinoDoEstadoComposto) {
 					if (estadosDeDestinoDoEstadoComposto.indexOf(estadoDeDestinoDoEstadoComposto) === -1 && estadoDeDestinoDoEstadoComposto.simbolo !== "!") {
@@ -237,19 +236,20 @@ AutomatosFinitos = {
 	
 	minimizar: function(nomeDoAutomato) {
 		var automato = ConjuntoDeAutomatosFinitos[nomeDoAutomato];
-		if (automato === undefined || 
-				!this.removerEstadosInacessiveis(automato, nomeDoAutomato) || 
-				!this.removerEstadosMortos(automato, nomeDoAutomato) ||
-				!this.removerEstadosEquivalentes(automato, nomeDoAutomato)) {
-			return false;
+		if (automato !== undefined) {
+			if (this.removerEstadosInacessiveis(automato, nomeDoAutomato) && 
+					this.removerEstadosMortos(automato, nomeDoAutomato) && 
+					this.removerEstadosEquivalentes(automato, nomeDoAutomato)) {
+				return true;
+			}
 		}
-		return true;
+		return false;
 	},
 	
 	removerEstadosInacessiveis: function(automato, nomeDoAutomato) {
 		var estadosAcessiveis = {};
 		var automatoDeterministico = true;
-		obterEstadosAcessiveis = function(estadoDePartida) {
+		var obterEstadosAcessiveis = function(estadoDePartida) {
 			Utilitarios.paraCada(automato.alfabeto, function(simbolo, chaveDoSimbolo) {
 				var transicao = automato.transicoes[estadoDePartida.simbolo][chaveDoSimbolo];
 				if (transicao.estadosDeDestino.length > 1) {
@@ -264,18 +264,21 @@ AutomatosFinitos = {
 		};
 		estadosAcessiveis[automato.estadoInicial.simbolo] = automato.estadoInicial;
 		obterEstadosAcessiveis(automato.estadoInicial);
+		if (!automatoDeterministico) {
+			return false;
+		}
 		Utilitarios.paraCada(automato.estados, function(estado, chaveDoEstado) {
 			if (estadosAcessiveis[chaveDoEstado] === undefined && chaveDoEstado !== "!") {
 				this.removerEstado(nomeDoAutomato, automato, estado);
 			}
 		}, this);
-		return automatoDeterministico;
+		return true;
 	},
 	
 	removerEstadosMortos: function(automato, nomeDoAutomato) {
 		var estadosVivos = {};
 		var automatoDeterministico = true;
-		obterEstadosVivos = function(estadoDeChegada) {
+		var obterEstadosVivos = function(estadoDeChegada) {
 			Utilitarios.paraCada(automato.estados, function(estado, chaveDoEstado) {
 				Utilitarios.paraCada(automato.alfabeto, function(simbolo, chaveDoSimbolo) {
 					if (estadosVivos[chaveDoEstado] === undefined) {
@@ -295,12 +298,15 @@ AutomatosFinitos = {
 			estadosVivos[estadoVivo.simbolo] = estadoVivo;
 			obterEstadosVivos(estadoVivo);
 		});
+		if (!automatoDeterministico) {
+			return false;
+		}
 		Utilitarios.paraCada(automato.estados, function(estado, chaveDoEstado) {
 			if (estadosVivos[chaveDoEstado] === undefined && chaveDoEstado !== "!") {
 				this.removerEstado(nomeDoAutomato, automato, estado);
 			}
 		}, this);
-		return automatoDeterministico;
+		return true;
 	},
 	
 	removerEstadosEquivalentes: function(automato, nomeDoAutomato) {
@@ -373,9 +379,10 @@ AutomatosFinitos = {
 			});
 			classesDeEquivalenciaAnterior = classesDeEquivalencia;
 			classesDeEquivalencia = classesDeEquivalenciaPosterior;
-			console.log(classesDeEquivalenciaAnterior);
-			console.log(classesDeEquivalencia);
 		} while (classesDeEquivalencia.length !== classesDeEquivalenciaAnterior.length);
+		if (!automatoDeterministico) {
+			return false;
+		}
 		Utilitarios.paraCada(classesDeEquivalencia, function(classeDeEquivalencia) {
 			var indice;
 			for (indice = 1; indice < classeDeEquivalencia.length; indice++) {
@@ -386,7 +393,7 @@ AutomatosFinitos = {
 				this.removerEstado(nomeDoAutomato, automato, estado, classeDeEquivalencia[0]);
 			}
 		}, this);
-		return automatoDeterministico;
+		return true;
 	},
 	
 	removerEstado: function(nomeDoAutomato, automato, estado, estadoSubstituto) {
@@ -453,7 +460,7 @@ AutomatosFinitos = {
 		}, this);
 	},
 	
-	clonarEstado: function (estado) {
+	clonarEstado: function(estado) {
 		var novoEstado = new Estado(estado.simbolo);
 		novoEstado.inicial = estado.inicial;
 		novoEstado.final = estado.final;
@@ -464,7 +471,7 @@ AutomatosFinitos = {
 		return new Simbolo(simbolo.simbolo);
 	},
 	
-	clonarTransicaoDeEstado: function (transicaoDeEstado, automatoClonado) {
+	clonarTransicaoDeEstado: function(transicaoDeEstado, automatoClonado) {
 		var estadoDeOrigemClonado = automatoClonado.estados[transicaoDeEstado.estadoDeOrigem.simbolo];
 		var estadosDeDestinoClonado = [];
 		Utilitarios.paraCada(transicaoDeEstado.estadosDeDestino, function(estadoDeDestino, chaveDoEstadoDeDestino) {
@@ -473,5 +480,51 @@ AutomatosFinitos = {
 		var simboloDeTransicaoClonado = automatoClonado.alfabeto[transicaoDeEstado.simboloDeTransicao.simbolo];
 		var transicaoClonada = new TransicaoDeEstado(estadoDeOrigemClonado, estadosDeDestinoClonado, simboloDeTransicaoClonado);
 		return transicaoClonada;
+	},
+	
+	reconhecerSentenca: function(nomeDoAutomato, sentenca) {
+		var automato = ConjuntoDeAutomatosFinitos[nomeDoAutomato];
+		if (automato !== undefined) {
+			var sentencaComoObjeto = new String(sentenca);
+			var estadoAtual = automato.estadoInicial;
+			Utilitarios.paraCada(sentencaComoObjeto, function(simbolo, indiceDoSimbolo) {
+				var transicao = automato.transicoes[estadoAtual.simbolo][simbolo];
+				if (transicao !== undefined) {
+					estadoAtual = transicao.estadosDeDestino[0];
+				} else {
+					estadoAtual = automato.estados["!"];
+					return;
+				}
+			});
+			if (estadoAtual !== automato.estados["!"] && estadoAtual.final) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return false;
+	},
+	
+	enumerarSentencas: function(nomeDoAutomato, tamanhoDasSentencas) {
+		var automato = ConjuntoDeAutomatosFinitos[nomeDoAutomato];
+		var enumeracoes = [];
+		if (automato !== undefined) {
+			var enumerar = function(estadoDePartida, tamanhoRestante, enumeracoes, enumeracaoParcial) {
+				if (tamanhoRestante > 0) {
+					tamanhoRestante--;
+					Utilitarios.paraCada(automato.transicoes[estadoDePartida.simbolo], function(transicao, simboloDaTransicao) {
+						Utilitarios.paraCada(transicao.estadosDeDestino, function(estadoDeDestino, indiceDoEstadoDeDestino) {
+							enumerar(estadoDeDestino, tamanhoRestante, enumeracoes, enumeracaoParcial + simboloDaTransicao);
+						});
+					});
+				} else {
+					if (tamanhoRestante === 0 && estadoDePartida.final) {
+						enumeracoes.push(enumeracaoParcial);
+					}
+				}
+			};
+			enumerar(automato.estadoInicial, tamanhoDasSentencas, enumeracoes, "");
+		}
+		return enumeracoes;
 	}
 };

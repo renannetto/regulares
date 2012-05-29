@@ -22,23 +22,23 @@
 		<div id="containerPrincipal">
 			<nav id="menuPrincipal">
 				<button id="botaoCriarAutomatoFinito">Criar AF</button>
-				<button id="botaoCriarExpressaoRegular" disabled="disabled">Criar ER</button>			
+				<button id="botaoCriarExpressaoRegular">Criar ER</button>			
 			</nav>
 			<div id="containerCentral">
 				<nav id="menuDeAutomatosFinitosExpressoesRegulares">
-					<ul id="listaDeAutomatosFinitos" class="listaDeEscolha"></ul>
-					<ul id="listaDeExpressoesRegulares" class="listaDeEscolha"></ul>
+					<ul id="listaDeAutomatosFinitos" class="listaDeEscolha automatoFinito"></ul>
+					<ul id="listaDeExpressoesRegulares" class="listaDeEscolha expressaoRegular"></ul>
 				</nav>
 				<div id="containerDeAutomatoFinitoExpressaoRegular">
 					<div id="containerDeAutomatoFinito">
 						<nav id="menuDeOpcoesDoAutomatoFinito">
 							<input type="text" id="textoAdicionarEstadoDeAutomatoFinito" placeholder="A" class="pequeno caixaAlta" maxlength="1" />
-							<button id="botaoAdicionarEstadoDeAutomatoFinito">Adicionar Estado</button>
+							<button id="botaoAdicionarEstadoDeAutomatoFinito" disabled="disabled">Adicionar Estado</button>
 							<input type="text" id="textoAdicionarSimboloDeAutomatoFinito" placeholder="a" class="pequeno caixaBaixa" maxlength="1" />
-							<button id="botaoAdicionarSimboloDeAutomatoFinito">Adicionar Símbolo</button>
-							<button id="botaoDeterminizarAutomatoFinito">Determinizar</button>
-							<button id="botaoMinimizarAutomatoFinito">Minimizar</button>
-							<button id="botaoClonarAutomatoFinito">Clonar</button>
+							<button id="botaoAdicionarSimboloDeAutomatoFinito" disabled="disabled">Adicionar Símbolo</button>
+							<button id="botaoDeterminizarAutomatoFinito" disabled="disabled">Determinizar</button>
+							<button id="botaoMinimizarAutomatoFinito" disabled="disabled">Minimizar</button>
+							<button id="botaoClonarAutomatoFinito" disabled="disabled">Clonar</button>
 							<button id="botaoRemoverAutomatoFinito" disabled="disabled">Remover</button>
 						</nav>
 						<section id="secaoAutomatoFinito">
@@ -48,15 +48,40 @@
 								<li>Transições com multiplos estados devem ter estados separados por virgula.</li>
 							</ul>
 						</section>
+						<section id="secaoSentencasDeAutomatoFinito">
+							<div id="containerReconhecimentoDeAutomatoFinito">
+							<h2>Reconhecimento</h2>
+								<input id="textoSentencaAReconhecer" type="text" placeholder="insira a sentença a ser reconhecida" class="grande">
+								<button id="botaoReconhecerSentencaDeAutomatoFinito" disabled="disabled">Reconhecer</button>
+								<p id="resultadoDoReconhecimento"></p>
+							</div>
+							<div id="containerEnumeracaoDeAutomatoFinito">
+								<h2>Enumeração</h2>
+								<input type="text" id="textoTamanhoDasSentencasAEnumerar" placeholder="0" class="pequeno" />
+								<button id="botaoEnumerarSentencasDeAutomatoFinito" disabled="disabled">Enumerar</button>
+								<ul id="resultadoDaEnumeracao"></ul>
+							</div>
+						</section>
 					</div>
 					<div id="containerDeExpressaoRegular">
 						<nav id="menuDeOpcoesDaExpressaoRegular">
-						
+							<button id="botaoConverterExpressaoRegularParaAutomatoFinito" disabled="disabled">Converter Para Automato Finito</button>
+							<button id="botaoClonarExpressaoRegular" disabled="disabled">Clonar</button>
+							<button id="botaoRemoverExpressaoRegular" disabled="disabled">Remover</button>
 						</nav>
 						<section id="secaoExpressaoRegular">
 							<ul>
-								<li>Expressoes regulares são legais :-)</li>
+								<li>As expressões podem ser formadas apenas por: <strong>(</strong> <strong>)</strong> <strong>|</strong> <strong>.</strong> <strong>*</strong> <strong>+</strong> <strong>?</strong> letras minúsculas e números.</li>
 							</ul>
+							<p id="expressaoRegularComoTexto"></p>
+							<input id="textoExpressaoRegular" type="text" placeholder="insira a expressão regular" class="grande" />
+							<button id="botaoSalvarExpressaoRegular" disabled="disabled">Salvar</button>
+							<div id="containerEquivalenciaDeExpressaoRegular">
+								<h2>Equivalência</h2>
+								<input type="text" id="textoEquivalenciaComExpressaoRegular" placeholder="nome da expressão regular" />
+								<button id="botaoVerificarEquivalenciaComExpressaoRegular" disabled="disabled">Verificar Equivalência</button>
+								<p id="resultadoEquivalenciaComExpressaoRegular"></p>
+							</div>
 						</section>
 					</div>
 				</div>
