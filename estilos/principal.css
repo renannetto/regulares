@@ -6,8 +6,13 @@
 	font-family: Helvetica, Verdana, Tahoma, Arial, Sens-serif;
 }
 
+.clear {
+	display: block;
+	clear: both;
+}
+
 body {
-	padding-bottom: 50px; 
+	padding: 100px 0 50px 0;
 }
 
 h1 {
@@ -106,6 +111,8 @@ input[type="text"].transicaoDeAutomatoFinito {
 }
 
 #cabecalho {
+	display: none;
+	margin-bottom: 30px;
 	padding: 15px 15px 0 15px;
 }
 
@@ -113,13 +120,30 @@ input[type="text"].transicaoDeAutomatoFinito {
 	list-style: none;
 }
 	
+#containerDeMenuPrincipal {
+	position: fixed;
+	top: 0;
+	width: 100%;
+}
+
 #menuPrincipal {
+	display: box;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -o-box;
+	display: -ms-box;
+	
+	box-orient: hotizontal;
+	-webkit-box-orient: hotizontal;
+	-moz-box-orient: hotizontal;
+	-o-box-orient: hotizontal;
+	-ms-box-orient: hotizontal;
+	
 	border-color: #AAA;
 	border-style: solid;
 	border-width: 0 0 2px 0;
 	background-color: #F9F9F9;
-	margin-bottom: 30px;
-	padding: 10px;
+	padding: 15px;
 }
 
 #menuPrincipal button {
@@ -178,6 +202,16 @@ p {
 	margin-bottom: 20px;
 }
 
+#containerSuperiorFixo {
+	display: inline-box;
+	
+	box-flex: 1;
+	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
+	-ms-box-flex: 1;
+	-o-box-flex: 1;
+}
+
 #caixaDeMensagens {
 	background-color: #EEE;
 	border-color: #AAA;
@@ -185,7 +219,6 @@ p {
 	border-width: 1px;
 	color: #777;
 	margin: auto;
-	margin-bottom: 30px;
 	padding: 5px;
 	text-align: center;
 	visibility: hidden;
@@ -331,11 +364,6 @@ strong {
 
 #expressaoRegularComoTexto .parenteses {
 	color: rgba(0, 102, 255, 1);
-/* 	color: #06F;  */
-/* 	color: #0A3; */
-/* 	color: #F00; */
-/* 	color: rgba(255, 0, 0, 0.8); */
-/*	color: rgba(255, 0, 0, 0.9); */
 }
 
 #expressaoRegularComoTexto .simbolos {

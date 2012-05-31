@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
-	<head>
+	<head lang="pt-br">
 		<meta charset="UTF-8" />
 		<title>Manipulador de linguagens regulares</title>
 		<link rel="stylesheet" href="estilos/principal.css" type="text/css" />
 		<script type="text/javascript" src="utilitarios.js"></script>
-		<script type="text/javascript" src="regulares.js"></script>
 		<script type="text/javascript" src="automatosFinitos.js"></script>
 		<script type="text/javascript" src="expressoesRegulares.js"></script>
 		<script type="text/javascript" src="controle.js"></script>
@@ -18,12 +17,16 @@
 				<li>Renan Oliveira (10103126)</li>
 			</ul>
 		</header>
-		<div id="caixaDeMensagens">Aviso</div>
 		<div id="containerPrincipal">
-			<nav id="menuPrincipal">
-				<button id="botaoCriarAutomatoFinito">Criar AF</button>
-				<button id="botaoCriarExpressaoRegular">Criar ER</button>			
-			</nav>
+			<div id="containerDeMenuPrincipal">
+				<nav id="menuPrincipal">
+					<button id="botaoCriarAutomatoFinito">Criar AF</button>
+					<button id="botaoCriarExpressaoRegular">Criar ER</button>			
+					<div id="containerSuperiorFixo">
+						<div id="caixaDeMensagens">Aviso</div>
+					</div>
+				</nav>
+			</div>
 			<div id="containerCentral">
 				<nav id="menuDeAutomatosFinitosExpressoesRegulares">
 					<ul id="listaDeAutomatosFinitos" class="listaDeEscolha automatoFinito"></ul>

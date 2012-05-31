@@ -1,8 +1,11 @@
-"use strict";
-
 var ConjuntoDeExpressoesRegulares = {};
 
 var ExpressaoRegular = new Prototipo({
+	/**
+	 * Função: inicializar
+	 * Descrição: inicializa as estruturas da expressão regular: expressão regular textual e árvore
+	 * de construção da expressão regular
+	 */
 	inicializar: function() {
 		this.expressaoRegularTextual = "";
 		this.arvoreDeConstrucao = null;
@@ -10,11 +13,20 @@ var ExpressaoRegular = new Prototipo({
 }); 
 
 var ArvoreBinaria = new Prototipo({
+	/**
+	 * Função: inicializar
+	 * Descrição: inicializa as estruturas da árvore binária: elemento raiz
+	 */
 	inicializar: function() {
-		this.quantidadeDeElementos = 0;
 		this.raiz = null;
 	},
 	
+	/**
+	 * Função: adicionarRaiz
+	 * Parâmetros:
+	 * 	- elemento: elemento a ser adicionado como raiz
+	 * Descrição: adiciona um novo elemento como raiz da árvore
+	 */
 	adicionarRaiz: function(elemento) {
 		var nodoRaiz = new Nodo(elemento);
 		if (this.raiz !== null) {
@@ -25,6 +37,13 @@ var ArvoreBinaria = new Prototipo({
 		return nodoRaiz;
 	},
 	
+	/**
+	 * Função: adicionarPai
+	 * Parâmetros:
+	 * 	- nodoFilho: nodo que existe na árvore e será filho do novo nodo a ser criado
+	 * 	- elemento: elemento a ser adicionado como pai
+	 * Descrição: adiciona um novo elemento como pai do nodo fornecido
+	 */
 	adicionarPai: function(nodoFilho, elemento) {
 		if (nodoFilho.pai === null) {
 			return this.adicionarRaiz(elemento);
@@ -42,30 +61,61 @@ var ArvoreBinaria = new Prototipo({
 		}
 	},
 	
+	/**
+	 * Função: adicionarFilhoNaEsquerda
+	 * Parâmetros:
+	 * 	- nodoPai: nodo que existe na árvore e será pai do novo nodo a ser criado
+	 * 	- elemento: elemento a ser adicionado como filho
+	 * Descrição: adiciona um novo elemento como filho da esquerda do nodo fornecido
+	 */
 	adicionarFilhoNaEsquerda: function(nodoPai, elemento) {
 		var nodoFilho = new Nodo(elemento);
 		return this.adicionarNodoFilhoNaEsquerda(nodoPai, nodoFilho);
 	},
 	
+	/**
+	 * Função: adicionarFilhoNaDireita
+	 * Parâmetros:
+	 * 	- nodoPai: nodo que existe na árvore e será pai do novo nodo a ser criado
+	 * 	- elemento: elemento a ser adicionado como filho
+	 * Descrição: adiciona um novo elemento como filho da direita do nodo fornecido
+	 */
 	adicionarFilhoNaDireita: function(nodoPai, elemento) {
 		var nodoFilho = new Nodo(elemento);
 		return this.adicionarNodoFilhoNaDireita(nodoPai, nodoFilho);
 	},
 	
+	/**
+	 * Função: adicionarNodoFilhoNaEsquerda
+	 * Parâmetros:
+	 * 	- nodoPai: nodo que existe na árvore e será pai do novo nodo a ser criado
+	 * 	- nodoFilho: nodo que não existe na árvore a ser adicionado como filho
+	 * Descrição: adiciona um novo nodo como filho da esquerda do nodo fornecido
+	 */
 	adicionarNodoFilhoNaEsquerda: function(nodoPai, nodoFilho) {
-//		nodoFilho.filhoDaEsquerda = nodoPai.filhoDaEsquerda;
 		nodoFilho.pai = nodoPai;
 		nodoPai.filhoDaEsquerda = nodoFilho;
 		return nodoFilho;
 	},
 	
+	/**
+	 * Função: adicionarNodoFilhoNaDireita
+	 * Parâmetros:
+	 * 	- nodoPai: nodo que existe na árvore e será pai do novo nodo a ser criado
+	 * 	- nodoFilho: nodo que não existe na árvore a ser adicionado como filho
+	 * Descrição: adiciona um novo nodo como filho da direita do nodo fornecido
+	 */
 	adicionarNodoFilhoNaDireita: function(nodoPai, nodoFilho) {
-//		nodoFilho.filhoDaEsquerda = nodoPai.filhoDaDireita;
 		nodoFilho.pai = nodoPai;
 		nodoPai.filhoDaDireita = nodoFilho;
 		return nodoFilho;
 	},
 	
+	/**
+	 * Função: fornecerNodos
+	 * Parâmetros:
+	 * Descrição: fornece uma lista com todos nodos na árvore através de uma busca em largura
+	 */
 	fornecerNodos: function() {
 		var fila = [];
 		var indice = 0;
@@ -85,6 +135,10 @@ var ArvoreBinaria = new Prototipo({
 		return fila;
 	},
 	
+	/**
+	 * Função: comoTexto
+	 * Descrição: fornece um texto com todos nodos da árvore buscados em largura
+	 */
 	comoTexto: function() {
 		var fila = [];
 		var texto = "";
@@ -113,6 +167,12 @@ var ArvoreBinaria = new Prototipo({
 });
 
 var Nodo = new Prototipo({
+	/**
+	 * Função: inicializar
+	 * Parâmetros:
+	 * 	- elemento: elemento que será representado pelo nodo
+	 * Descrição: inicializa as estruturas do nodo: elemento, filhoDaEsquerda, filhoDaDireita e pai
+	 */
 	inicializar: function(elemento) {
 		this.elemento = elemento;
 		this.filhoDaEsquerda = null;
@@ -120,12 +180,21 @@ var Nodo = new Prototipo({
 		this.pai = null;
 	},
 	
+	/**
+	 * Função: comoTexto
+	 * Descrição: fornece a representação textual do nodo
+	 */
 	comoTexto: function() {
 		return this.elemento.comoTexto();
 	}
 });
 
 var TabelaDeSimbolosConstrutora = new Prototipo({
+	/**
+	 * Função: inicializar
+	 * Descrição: inicializa as estruturas da tabela de símbolos construtora: arvore, pilha,
+	 * excecaoDeExpressaoREgularInvalida, nodosFolha
+	 */
 	inicializar: function() {
 		this.arvore = new ArvoreBinaria();
 		this.pilha = [];
@@ -133,6 +202,10 @@ var TabelaDeSimbolosConstrutora = new Prototipo({
 		this.nodosFolha = 0;
 	},
 	
+	/**
+	 * Função: costurarArvore
+	 * Descrição: costura a arvore gerada através da função constuir
+	 */
 	costurarArvore: function() {
 		var nodos = this.arvore.fornecerNodos();
 		Utilitarios.paraCada(nodos, function(nodo, indiceDoNodo) {
@@ -154,6 +227,12 @@ var TabelaDeSimbolosConstrutora = new Prototipo({
 		});
 	},
 	
+	/**
+	 * Função: construir
+	 * Parâmetros:
+	 * 	- expressaoRegular: expressão regular a partir do qual será construído a árvore
+	 * Descrição: constrói a árvore que representará a expressão regular fornecida
+	 */
 	construir: function(expressaoRegular) {
 		try {
 			expressaoRegular = new String(expressaoRegular);
@@ -175,17 +254,23 @@ var TabelaDeSimbolosConstrutora = new Prototipo({
 			} else {
 				throw this.excecaoDeExpressaoRegularInvalida;
 			}
-//			console.log(this.arvore.comoTexto());
 			this.costurarArvore();
 		} catch (excecao) {
 			if (excecao.mensagem === "Expressão regular inválida.") {
 				return false;
 			}
-			throw new ExcecaoUtilitarios("Erro na construção da árvore da expressão regular");
+			throw excecao;
 		}
 		return true;
 	},
 	
+	/**
+	 * Função: simboloDoAlfabeto
+	 * Parâmetros:
+	 * 	- simbolo: simbolo que será representado por um nodo folha na árvore
+	 * Descrição: empilha o novo símbolo caso não exista nenhuma operação pendente e adiciona o símbolo
+	 * como nodo folha de uma operação pendente caso exista
+	 */
 	"simboloDoAlfabeto": function(simbolo) { 
 		var topoDaPilha = this.pilha.pop();
 		if (topoDaPilha !== undefined && (Utilitarios.instanciaDe(topoDaPilha, OperacaoBinaria) && topoDaPilha.simbolo === ".")) {
@@ -231,6 +316,14 @@ var TabelaDeSimbolosConstrutora = new Prototipo({
 		}
 	},
 	
+	/**
+	 * Função: agrupamento
+	 * Parâmetros:
+	 * 	- nodoRaizDoAgrupamento: nodo que seŕa o ponto de partida para um novo ramo na árvore
+	 * Descrição: empilha o novo agrupamento caso não exista nenhuma operação pendente e adiciona o agrupamento
+	 * como filho da operação pendente caso exista. Entende-se por agrupamento uma expressão regular
+	 * contida entre parêntenses
+	 */
 	"agrupamento": function(nodoRaizDoAgrupamento) {
 		nodoRaizDoAgrupamento.elemento.inicioDeAgrupamento = true;
 		var topoDaPilha = this.pilha.pop();
@@ -276,6 +369,13 @@ var TabelaDeSimbolosConstrutora = new Prototipo({
 		}
 	},
 	
+	/**
+	 * Função: operacaoUnaria
+	 * Parâmetros:
+	 * 	- operacaoUnaria: operação que será efetivada
+	 * Descrição: cria um novo nodo da árvore contendo a operação fornecida. Essa operação consumirá
+	 * da pilha um símbolo ou agrupamento
+	 */
 	"operacaoUnaria": function(operacaoUnaria) {
 		var topoDaPilha = this.pilha.pop();
 		if (Utilitarios.instanciaDe(topoDaPilha, SimboloDoAlfabeto)) {
@@ -297,10 +397,18 @@ var TabelaDeSimbolosConstrutora = new Prototipo({
 		}	
 	},
 	
+	/**
+	 * Função: *
+	 * Descrição: chama a função operacaoUnaria com o parâmetro *
+	 */
 	"*": function() {
 		this.operacaoUnaria(new OperacaoUnaria("*"));
 	},
 	
+	/**
+	 * Função: .
+	 * Descrição: adiciona uma operação binária pendente no topo da pilha
+	 */
 	".": function() {
 		var topoDaPilha = this.pilha.pop();
 		if (Utilitarios.instanciaDe(topoDaPilha, SimboloDoAlfabeto)) {
@@ -317,6 +425,10 @@ var TabelaDeSimbolosConstrutora = new Prototipo({
 		}
 	},
 	
+	/**
+	 * Função: |
+	 * Descrição: adiciona uma operação binária pendente no topo da pilha
+	 */
 	"|": function() {
 		var topoDaPilha = this.pilha.pop();
 		if (Utilitarios.instanciaDe(topoDaPilha, SimboloDoAlfabeto)) {
@@ -333,19 +445,118 @@ var TabelaDeSimbolosConstrutora = new Prototipo({
 		}
 	},
 	
+	/**
+	 * Função: +
+	 * Descrição: decompõe a operação a+ em uma operação aa* e adiciona na árvore as operações
+	 * resultante dessa decomposição
+	 */
 	"+": function() {
-		this.operacaoUnaria(new OperacaoUnaria("+"));
+		/**
+		 * Função: clonarElemento
+		 * Parâmetros: 
+		 * 	- elemento: elemento que será clonado
+		 * Descrição: clona um elemento que será duplicado na árvore
+		 */
+		var clonarElemento = function(elemento) {
+			var novoElemento = null;
+			if (!Utilitarios.instanciaDe(elemento, SimboloDeAgrupamento)) {
+				if (Utilitarios.instanciaDe(elemento, SimboloDoAlfabeto)) {
+					novoElemento = new SimboloDoAlfabeto(elemento.simbolo);
+					this.nodosFolha++;
+					novoElemento.indiceNaArvore = this.nodosFolha;
+				} else if (Utilitarios.instanciaDe(elemento, OperacaoBinaria)) {
+					novoElemento = new OperacaoBinaria(elemento.simbolo);
+				} else if (Utilitarios.instanciaDe(elemento, OperacaoUnaria)) { 
+					novoElemento = new OperacaoUnaria(elemento.simbolo);
+				} 
+				novoElemento.inicioDeAgrupamento = elemento.inicioDeAgrupamento;
+			} else {
+				novoElemento = new SimboloDeAgrupamento(elemento.simbolo, elemenento.arvoreSalva);
+			}
+			return novoElemento;
+		};
+		clonarElemento = clonarElemento.bind(this);
+		/**
+		 * Função: clonarRamo
+		 * Parâmetros: 
+		 * 	- nodoDePartida: nodo de partica do ramo a ser clonado
+		 * Descrição: clona um ramo que será duplicado na árvore
+		 */
+		var clonarRamo = function(nodoDePartida) {
+			var novaArvore = new ArvoreBinaria();
+			var fila = [];
+			var filaDosNovos = [];
+			var indice = 0;
+			var novoNodoDePartida = novaArvore.adicionarRaiz(clonarElemento(nodoDePartida.elemento));
+			fila.push(nodoDePartida);
+			filaDosNovos.push(novoNodoDePartida);
+			while (indice < fila.length) {
+				var nodoAtual = fila[indice];
+				var nodoAtualNovo = filaDosNovos[indice];
+				if (nodoAtual.filhoDaEsquerda !== null) {
+					novaArvore.adicionarFilhoNaEsquerda(nodoAtualNovo, clonarElemento(nodoAtual.filhoDaEsquerda.elemento));
+					fila.push(nodoAtual.filhoDaEsquerda);
+					filaDosNovos.push(nodoAtualNovo.filhoDaEsquerda);
+				}
+				if (nodoAtual.filhoDaDireita !== null) {
+					novaArvore.adicionarFilhoNaDireita(nodoAtualNovo, clonarElemento(nodoAtual.filhoDaDireita.elemento));
+					fila.push(nodoAtual.filhoDaDireita);
+					filaDosNovos.push(nodoAtualNovo.filhoDaDireita);
+				}
+				indice++;
+			}
+			return novaArvore.raiz;
+		};
+		clonarRamo = clonarRamo.bind(this);
+		var topoDaPilha = this.pilha.pop();
+		if (Utilitarios.instanciaDe(topoDaPilha, SimboloDoAlfabeto)) {
+			var novoNodoFolha = new SimboloDoAlfabeto(topoDaPilha.simbolo);
+			this.nodosFolha++;
+			novoNodoFolha.indiceNaArvore = this.nodosFolha;
+			var nodoDaOperacao = this.arvore.adicionarRaiz(new OperacaoBinaria("."));
+			this.arvore.adicionarFilhoNaEsquerda(nodoDaOperacao, topoDaPilha);
+			var nodoDoFechamento = this.arvore.adicionarFilhoNaDireita(nodoDaOperacao, new OperacaoUnaria("*"));
+			this.arvore.adicionarFilhoNaEsquerda(nodoDoFechamento, novoNodoFolha);
+			this.pilha.push(nodoDaOperacao);
+		} else if (Utilitarios.instanciaDe(topoDaPilha, Nodo) && Utilitarios.instanciaDe(topoDaPilha.elemento, OperacaoBinaria)) {
+			var nodoAtual = topoDaPilha;
+			while (!nodoAtual.elemento.inicioDeAgrupamento) {
+				nodoAtual = nodoAtual.filhoDaDireita;
+				if (nodoAtual === null) {
+					throw this.excecaoDeExpressaoRegularInvalida;
+				}
+			}
+			var nodoDaOperacao = this.arvore.adicionarPai(nodoAtual, new OperacaoBinaria("."));
+			var nodoDoFechamento = this.arvore.adicionarFilhoNaDireita(nodoDaOperacao, new OperacaoUnaria("*"));
+			this.arvore.adicionarNodoFilhoNaEsquerda(nodoDoFechamento, clonarRamo(nodoAtual));
+			this.pilha.push(this.arvore.raiz);
+		} else {
+			throw this.excecaoDeExpressaoRegularInvalida;
+		}	
 	},
 	
+	/**
+	 * Função: *
+	 * Descrição: chama a função operacaoUnaria com o parâmetro *
+	 */
 	"?": function() {
 		this.operacaoUnaria(new OperacaoUnaria("?"));
 	},
 	
+	/**
+	 * Função: (
+	 * Descrição: adiciona na pilha a abertura de um agrupamento
+	 */
 	"(": function() {
 		this.pilha.push(new SimboloDeAgrupamento("(", this.arvore));
 		this.arvore = new ArvoreBinaria();
 	},
 	
+	/**
+	 * Função: )
+	 * Descrição: fecha um agrupamento que havia sido aberto anteriormente e adiciona na árvore
+	 * a sub-árvore resultante que representa esse agrupamento
+	 */
 	")": function() {
 		var topoDaPilha = this.pilha.pop();
 		if (!(Utilitarios.instanciaDe(topoDaPilha, SimboloDeAgrupamento) && topoDaPilha.simbolo === "(")) {
@@ -366,6 +577,12 @@ var TabelaDeSimbolosConstrutora = new Prototipo({
 });
 
 var OperacaoUnaria = new Prototipo({
+	/**
+	 * Função: inicializar
+	 * Parâmetros: 
+	 * 	- operacao: operação que representa a operação unária
+	 * Descrição: inicializa as estruturas da operação unária: simbolo, inicioDeAgrupamento, nodo e costura
+	 */
 	inicializar: function(operacao) {
 		this.simbolo = operacao;
 		this.inicioDeAgrupamento = false;
@@ -373,12 +590,22 @@ var OperacaoUnaria = new Prototipo({
 		this.costura = null;
 	},
 	
+	/**
+	 * Função: comoTexto
+	 * Descrição: fornece a representação textual da operação unária
+	 */
 	comoTexto: function() {
 		return this.simbolo;
 	},
 	
+	/**
+	 * Função: subir
+	 * Parâmetros: 
+	 * 	- composicao: composicao que contém os nodos folha do percorrimento atual
+	 * Descrição: sobe na árvore de acordo com a especificação subir de cada operação unária
+	 */
 	subir: function(composicao) {
-		if (this.simbolo === "*" || this.simbolo === "+") {
+		if (this.simbolo === "*") {
 			this.nodo.filhoDaEsquerda.elemento.descer(composicao);
 		}
 		if (this.costura !== null) {
@@ -388,6 +615,12 @@ var OperacaoUnaria = new Prototipo({
 		}
 	},
 	
+	/**
+	 * Função: descer
+	 * Parâmetros: 
+	 * 	- composicao: composicao que contém os nodos folha do percorrimento atual
+	 * Descrição: desce na árvore de acordo com a especificação subir de cada operação unária
+	 */
 	descer: function(composicao) {
 		this.nodo.filhoDaEsquerda.elemento.descer(composicao);
 		if (this.costura !== null) {
@@ -399,6 +632,12 @@ var OperacaoUnaria = new Prototipo({
 });
 
 var OperacaoBinaria = new Prototipo({
+	/**
+	 * Função: inicializar
+	 * Parâmetros: 
+	 * 	- operacao: operação que representa a operação binária
+	 * Descrição: inicializa as estruturas da operação binária: simbolo, inicioDeAgrupamento, nodo e costura
+	 */
 	inicializar: function(operacao) {
 		this.simbolo = operacao;
 		this.inicioDeAgrupamento = false;
@@ -406,10 +645,20 @@ var OperacaoBinaria = new Prototipo({
 		this.costura = null;
 	},
 	
+	/**
+	 * Função: comoTexto
+	 * Descrição: fornece a representação textual da operaçã binária
+	 */
 	comoTexto: function() {
 		return this.simbolo;
 	},
 	
+	/**
+	 * Função: subir
+	 * Parâmetros: 
+	 * 	- composicao: composicao que contém os nodos folha do percorrimento atual
+	 * Descrição: sobe na árvore de acordo com a especificação subir de cada operação binária
+	 */
 	subir: function(composicao) {
 		if (this.simbolo === ".") {
 			this.costura.elemento.descer(composicao);
@@ -422,6 +671,12 @@ var OperacaoBinaria = new Prototipo({
 		}
 	},
 	
+	/**
+	 * Função: desce
+	 * Parâmetros: 
+	 * 	- composicao: composicao que contém os nodos folha do percorrimento atual
+	 * Descrição: desce na árvore de acordo com a especificação subir de cada operação binária
+	 */
 	descer: function(composicao) {
 		this.nodo.filhoDaEsquerda.elemento.descer(composicao);
 		if (this.simbolo === "|") {
@@ -431,6 +686,13 @@ var OperacaoBinaria = new Prototipo({
 });
 
 var SimboloDoAlfabeto = new Prototipo({
+	/**
+	 * Função: inicializar
+	 * Parâmetros: 
+	 * 	- simbolo: símbolo que representa o simbolo do alfabeto
+	 * Descrição: inicializa as estruturas do simbolo do alfabeto: simbolo, inicioDeAgrupamento,
+	 * indiceNaArvore, nodo e costura
+	 */
 	inicializar: function(simbolo) {
 		this.simbolo = simbolo;
 		this.inicioDeAgrupamento = true;
@@ -439,10 +701,20 @@ var SimboloDoAlfabeto = new Prototipo({
 		this.costura = null;
 	},
 	
+	/**
+	 * Função: comoTexto
+	 * Descrição: fornece a representação textual do simbolo do alfabeto
+	 */
 	comoTexto: function() {
 		return this.simbolo;
 	},
 	
+	/**
+	 * Função: subir
+	 * Parâmetros: 
+	 * 	- composicao: composicao que contém os nodos folha do percorrimento atual
+	 * Descrição: sobe na árvore de acordo com a especificação subir dos símbolos do alfabeto
+	 */
 	subir: function(composicao) {
 		if (this.costura !== null) {
 			this.costura.elemento.subir(composicao);
@@ -451,6 +723,12 @@ var SimboloDoAlfabeto = new Prototipo({
 		}
 	},
 	
+	/**
+	 * Função: desce
+	 * Parâmetros: 
+	 * 	- composicao: composicao que contém os nodos folha do percorrimento atual
+	 * Descrição: desce na árvore de acordo com a especificação subir dos símbolos do alfabeto
+	 */
 	descer: function(composicao) {
 		if (composicao[this.simbolo] === undefined) {
 			composicao[this.simbolo] = {};
@@ -460,27 +738,54 @@ var SimboloDoAlfabeto = new Prototipo({
 });
 
 var SimboloDeAgrupamento = new Prototipo({
+	/**
+	 * Função: inicializar
+	 * Parâmetros: 
+	 * 	- simbolo: símbolo de agrupamento que pode ser ( ou )
+	 * 	- arvoreSalva: arvore existente no momento da abertura do agrupamento
+	 * Descrição: inicializa as estruturas do simbolo de agrupamento: simbolo e arvoreSalva
+	 */
 	inicializar: function(simbolo, arvoreSalva) {
 		this.simbolo = simbolo;
 		this.arvoreSalva = arvoreSalva;
 	},
 	
+	/**
+	 * Função: comoTexto
+	 * Descrição: fornece a representação textual do símbolo de agrupamento
+	 */
 	comoTexto: function() {
 		return this.simbolo;
 	}
 });
 
 var ProvedorDeSimbolosDeEstados = new Prototipo({
+	/**
+	 * Função: inicializar
+	 * Parâmetros: 
+	 * Descrição: inicializa as estruturas do provedor de simbolos de estados: simbolosDeEstados
+	 */
 	inicializar: function() {
 		this.simbolosDeEstados = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "W", "V", "X", "Y", "Z"];
 	},
 	
+	/**
+	 * Função: fornecerNovo
+	 * Descrição: fornece um novo símbolo de estado eleminando esse símbolo da lista de símbolos 
+	 * que ainda podem ser fornecidos
+	 */
 	fornecerNovo: function() {
 		return this.simbolosDeEstados.shift();
 	}
 });
 
 var ExpressoesRegulares = {
+	/**
+	 * Função: criar
+	 * Parâmetros: 
+	 * 	- nome: nome da expressão regular a ser criada
+	 * Descrição: cria uma nova expressão regular de acordo com o nome fornecido
+	 */
 	criar: function(nome) {
 		if (ConjuntoDeExpressoesRegulares[nome] === undefined) {
 			ConjuntoDeExpressoesRegulares[nome] = new ExpressaoRegular();
@@ -489,6 +794,14 @@ var ExpressoesRegulares = {
 		return false;
 	},
 	
+	/**
+	 * Função: salvar
+	 * Parâmetros: 
+	 * 	- nome: nome da expressão regular a ser salva
+	 * 	- expressaoRegularTextual: expressão regular textual a ser salva
+	 * Descrição: salva a expressão regular caso seja possível construir a árvore e caso contrário
+	 * não salva, pois a expressão regular fornecida é inválida
+	 */
 	salvar: function(nome, expressaoRegularTextual) {
 		var expressaoRegular = ConjuntoDeExpressoesRegulares[nome];
 		var construtorDaArvore = new TabelaDeSimbolosConstrutora();
@@ -502,6 +815,14 @@ var ExpressoesRegulares = {
 		return false;
 	},
 	
+	/**
+	 * Função: converterParaAutomatoFinito
+	 * Parâmetros: 
+	 * 	- nome: nome da expressão regular a ser convertida
+	 * Descrição: caso a árvore de construção da expressão regular exista, então usa as funções
+	 * de subir e descer para andar pela árvore e construir as composições para finalmente
+	 * construir o autômato finito
+	 */
 	converterParaAutomatoFinito: function(nome) {
 		var expressaoRegular = ConjuntoDeExpressoesRegulares[nome];
 		if (expressaoRegular !== undefined && expressaoRegular.arvoreDeConstrucao !== null) {
@@ -557,9 +878,17 @@ var ExpressoesRegulares = {
 			}
 			return estados;
 		}
-		return null;
+		return {};
 	},
 	
+	/**
+	 * Função: criarEstado
+	 * Parâmetros: 
+	 * 	- simbolo: simbolo do estado a ser criado
+	 * 	- nodosFolha: nodos folha que foram responsáveis para a criação desse estado
+	 * Descrição: função que é usada pela função converterParaAutomatoFinito e cria um novo estado
+	 * resultante de uma composição
+	 */
 	criarEstado: function(simbolo, nodosFolha) {
 		if (nodosFolha === null) {
 			nodosFolha = {};
@@ -577,6 +906,15 @@ var ExpressoesRegulares = {
 		return estado;
 	},
 	
+	/**
+	 * Função: encontrarEstadoDeTransicao
+	 * Parâmetros: 
+	 * 	- estados: estados existentes no autômato pré-construído
+	 * 	- nodosFolha: nodos folha da composição do estado o qual se deseja encontrar as transições
+	 * Descrição: função que é usada pela função converterParaAutomatoFinito e essa função é chamada após 
+	 * a realização da composição de um estado. Seu objetivo é verificar se o estado da transição que vai ser 
+	 * gerada a partir dessa composição já existe ou se é necessário criar um estado novo
+	 */
 	encontrarEstadoDeTransicao: function(estados, nodosFolha) {
 		var estadoDaTransicao = null;
 		Utilitarios.paraCada(estados, function(estado, simboloDoEstado) {
@@ -599,6 +937,14 @@ var ExpressoesRegulares = {
 		return estadoDaTransicao;
 	},
 	
+	/**
+	 * Função: encontrarEstadoEquivalente
+	 * Parâmetros: 
+	 * 	- estados: estados exsitentes no autômato pré construído
+	 * 	- composicao: do estado o qual se deseja encontrar estados equivalentes
+	 * Descrição: função que é usada pela função converterParaAutomatoFinito que verifica se um estado
+	 * criado já possui um equivalente e se possuir elimina-o do autômato
+	 */
 	encontrarEstadoEquivalente: function(estados, composicao) {
 		var estadoEquivalente = null;
 		Utilitarios.paraCada(estados, function(estado, simboloDoEstado) {
@@ -628,17 +974,29 @@ var ExpressoesRegulares = {
 		return estadoEquivalente;
 	},
 	
-	 clonar: function(nomeDaExpressaoRegular, nomeDaExpressaoRegularClonada) {
+	
+	/**
+	 * Função: clonar
+	 * Parâmetros: 
+	 * 	- nomeDaExpressaoRegular: nome da expressão regular a ser clonada
+	 * 	- nomeDaExpressaoRegularClonada: nome da expressão regular resultante da clonagem
+	 * Descrição: clona uma dada expressão regular
+	 */
+	clonar: function(nomeDaExpressaoRegular, nomeDaExpressaoRegularClonada) {
 		 var expressaoRegular = ConjuntoDeExpressoesRegulares[nomeDaExpressaoRegular];
 		 if (expressaoRegular !== undefined && this.criar(nomeDaExpressaoRegularClonada)) {
 			 return this.salvar(nomeDaExpressaoRegularClonada, expressaoRegular.expressaoRegularTextual);
 		 }
 		 return false;
-	 },
+	},
 	 
-	 verificarEquivalencia: function(nomeDaExpressaoRegularA, nomeDaExpressaoRegularB) {
-		 var automatoFinitoConvertidoA = this.converterParaAutomatoFinito(nomeDaExpressaoRegularA);
-		 var automatoFinitoConvertidoB = this.converterParaAutomatoFinito(nomeDaExpressaoRegularB);
-		 return false;
-	 }
+	/**
+	 * Função: remover
+	 * Parâmetros: 
+	 * 	- nomeDaExpressaoRegular: nome da expressão regular a ser removida
+	 * Descrição: remove a expressão regular desejada do ConjuntoDeExpressoesRegulares
+	 */
+	remover: function(nomeDaExpressaoRegular) {
+		 delete ConjuntoDeExpressoesRegulares[nomeDaExpressaoRegular];
+	}
 };
