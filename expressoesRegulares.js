@@ -249,10 +249,13 @@ var TabelaDeSimbolosConstrutora = new Prototipo({
 			var topoDaPilha = this.pilha.pop();
 			if (Utilitarios.instanciaDe(topoDaPilha, SimboloDoAlfabeto)) {
 				this.arvore.adicionarRaiz(topoDaPilha);
-			} else if (Utilitarios.instanciaDe(topoDaPilha, Nodo)) {
+			} else if (Utilitarios.instanciaDe(topoDaPilha, Nodo) && !Utilitarios.instanciaDe(topoDaPilha.elemento, SimboloDeAgrupamento)) {
 				
 			} else {
 				throw this.excecaoDeExpressaoRegularInvalida;
+			}
+			if (this.pilha.length > 0) {
+				return false;
 			}
 			this.costurarArvore();
 		} catch (excecao) {
